@@ -23,7 +23,32 @@
     <div class="loading">Loading...</div>
 
     <!-- Omnisend tracking code with callback -->
-    <script src="./omni.js">
+    <script type="text/javascript">
+        window.omnisend = window.omnisend || [];
+        omnisend.push(["brandID", "6853bf0968f5ed9fec5474b3"]);
+        omnisend.push(["track", "$pageViewed"]);
+        
+        // Callback function to redirect after tracking
+        omnisend.push(["callback", function() {
+            // Omnisend tracking is complete, now redirect
+            window.location.href = "https://omniform1.com/forms/v1/landingPage/6853bf0968f5ed9fec5474b3/68551b0ea86a2989e0215556";
+        }]);
+        
+        !function(){var e=document.createElement("script");
+        e.type="text/javascript",e.async=!0,
+        e.src="https://omnisnippet1.com/inshop/launcher-v2.js";
+        var t=document.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(e,t)}();
+    </script>
+
+    <!-- Fallback redirect in case callback doesn't work -->
+    <script>
+        // Fallback: redirect after 3 seconds if callback doesn't fire
+        setTimeout(function() {
+            if (window.location.href.indexOf('omniform1.com') === -1) {
+                window.location.href = "https://omniform1.com/forms/v1/landingPage/6853bf0968f5ed9fec5474b3/68551b0ea86a2989e0215556";
+            }
+        }, 3000);
     </script>
 </body>
 </html>
