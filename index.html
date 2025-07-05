@@ -16,28 +16,92 @@
         .loading {
             font-size: 18px;
             color: #666;
+            margin-bottom: 20px;
+        }
+        .redirect-message {
+            font-size: 14px;
+            color: #888;
+            margin-top: 10px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
+    <div class="spinner"></div>
     <div class="loading">Loading...</div>
-
-    <!-- Immediate redirect script -->
-    <script>
-        // Fire tracking and redirect immediately
-        window.location.href = "https://omniform1.com/forms/v1/landingPage/6853bf0968f5ed9fec5474b3/68551b0ea86a2989e0215556";
-    </script>
-
-    <!-- Omnisend tracking code - place before closing </body> tag -->
+    <div class="redirect-message">Setting up your newsletter signup...</div>
+    
+    <!-- Omnisend tracking code -->
     <script type="text/javascript">
         window.omnisend = window.omnisend || [];
         omnisend.push(["brandID", "6853bf0968f5ed9fec5474b3"]);
         omnisend.push(["track", "$pageViewed"]);
-        !function(){var e=document.createElement("script");
-        e.type="text/javascript",e.async=!0,
-        e.src="https://omnisnippet1.com/inshop/launcher-v2.js";
-        var t=document.getElementsByTagName("script")[0];
-        t.parentNode.insertBefore(e,t)}();
+        
+        // Flag to track if Omnisend has loaded
+        var omnisendLoaded = false;
+        var redirectUrl = "https://omniform1.com/forms/v1/landingPage/6853bf0968f5ed9fec5474b3/68551b0ea86a2989e0215556";
+        
+        // Function to handle redirect
+        function performRedirect() {
+            if (!omnisendLoaded) {
+                omnisendLoaded = true;
+                console.log("Omnisend tracking completed, redirecting...");
+                window.location.href = redirectUrl;
+            }
+        }
+        
+        // Load Omnisend script with callback
+        !function(){
+            var e=document.createElement("script");
+            e.type="text/javascript";
+            e.async=!0;
+            e.src="https://omnisnippet1.com/inshop/launcher-v2.js";
+            
+            // Handle when script loads successfully
+            e.onload = function() {
+                console.log("Omnisend script loaded successfully");
+                // Give a small delay to ensure tracking is processed
+                setTimeout(performRedirect, 1000);
+            };
+            
+            // Handle script load errors
+            e.onerror = function() {
+                console.log("Omnisend script failed to load, redirecting anyway");
+                performRedirect();
+            };
+            
+            var t=document.getElementsByTagName("script")[0];
+            t.parentNode.insertBefore(e,t);
+        }();
+        
+        // Fallback timeout in case something goes wrong (max 10 seconds)
+        setTimeout(function() {
+            if (!omnisendLoaded) {
+                console.log("Fallback timeout reached, redirecting...");
+                performRedirect();
+            }
+        }, 10000);
+        
+        // Additional check for when omnisend object becomes available
+        var checkOmnisend = setInterval(function() {
+            if (window.omnisend && typeof window.omnisend.push === 'function') {
+                console.log("Omnisend object is ready");
+                clearInterval(checkOmnisend);
+                setTimeout(performRedirect, 500);
+            }
+        }, 100);
     </script>
 </body>
 </html>
